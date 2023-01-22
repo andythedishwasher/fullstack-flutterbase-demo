@@ -20,6 +20,7 @@ class _DashboardWidgetState extends State<DashboardWidget> {
   bool isMediaUploading = false;
   FFLocalFile uploadedLocalFile = FFLocalFile(bytes: Uint8List.fromList([]));
 
+  ApiCallResponse? apiResulta2r;
   TextEditingController? textController3;
   TextEditingController? textController4;
   ApiCallResponse? url;
@@ -316,7 +317,7 @@ class _DashboardWidgetState extends State<DashboardWidget> {
                                 audio: Audio.network(
                                   FFAppState().songUrl,
                                   metas: Metas(
-                                    id: 'sample3.mp3-o6ort3bh',
+                                    id: 'sample3.mp3-dcoinuxv',
                                   ),
                                 ),
                                 titleTextStyle: FlutterFlowTheme.of(context)
@@ -603,26 +604,35 @@ class _DashboardWidgetState extends State<DashboardWidget> {
                                                     }
                                                   }
 
-                                                  await MultipartTestEndpointCall
-                                                      .call(
+                                                  apiResulta2r =
+                                                      await FirebaseMusicManagerGroup
+                                                          .uploadSongCall
+                                                          .call(
                                                     artist:
-                                                        textController1!.text,
-                                                    file: uploadedLocalFile,
+                                                        textController3!.text,
                                                     song: textController4!.text,
+                                                    upload: uploadedLocalFile,
+                                                    jwtToken: currentJwtToken,
                                                   );
-                                                  if ((url?.succeeded ??
+                                                  if ((apiResulta2r
+                                                          ?.succeeded ??
                                                       true)) {
                                                     await showDialog(
                                                       context: context,
                                                       builder:
                                                           (alertDialogContext) {
                                                         return AlertDialog(
-                                                          title:
-                                                              Text('Success!'),
-                                                          content: Text(
-                                                              (url?.jsonBody ??
-                                                                      '')
-                                                                  .toString()),
+                                                          title: Text((apiResulta2r
+                                                                      ?.statusCode ??
+                                                                  200)
+                                                              .toString()),
+                                                          content:
+                                                              Text(getJsonField(
+                                                            (apiResulta2r
+                                                                    ?.jsonBody ??
+                                                                ''),
+                                                            r'''$.signedUrl''',
+                                                          ).toString()),
                                                           actions: [
                                                             TextButton(
                                                               onPressed: () =>
@@ -640,9 +650,17 @@ class _DashboardWidgetState extends State<DashboardWidget> {
                                                       builder:
                                                           (alertDialogContext) {
                                                         return AlertDialog(
-                                                          title: Text('Error'),
-                                                          content: Text(
-                                                              '${(url?.statusCode ?? 200).toString()} ${(url?.jsonBody ?? '').toString()}'),
+                                                          title: Text((apiResulta2r
+                                                                      ?.statusCode ??
+                                                                  200)
+                                                              .toString()),
+                                                          content:
+                                                              Text(getJsonField(
+                                                            (apiResulta2r
+                                                                    ?.jsonBody ??
+                                                                ''),
+                                                            r'''$.error''',
+                                                          ).toString()),
                                                           actions: [
                                                             TextButton(
                                                               onPressed: () =>
@@ -655,6 +673,8 @@ class _DashboardWidgetState extends State<DashboardWidget> {
                                                       },
                                                     );
                                                   }
+
+                                                  setState(() {});
                                                 },
                                                 text: 'Upload Song',
                                                 options: FFButtonOptions(

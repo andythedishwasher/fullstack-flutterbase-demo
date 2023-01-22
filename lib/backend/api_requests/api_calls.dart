@@ -60,8 +60,8 @@ class UploadSongCall {
       callType: ApiCallType.POST,
       headers: {
         ...FirebaseMusicManagerGroup.headers,
-        'Authorization': 'Bearer ${jwtToken}',
         'Content-Type': 'multipart/formData',
+        'Authorization': 'Bearer ${jwtToken}',
       },
       params: {
         'upload': upload,
@@ -78,31 +78,6 @@ class UploadSongCall {
 }
 
 /// End Firebase Music Manager Group Code
-
-class MultipartTestEndpointCall {
-  static Future<ApiCallResponse> call({
-    String? artist = '',
-    FFLocalFile? file,
-    String? song = '',
-  }) {
-    return ApiManager.instance.makeApiCall(
-      callName: 'Multipart Test Endpoint',
-      apiUrl: 'http://192.168.254.64:8080/upload/${artist}/${song}',
-      callType: ApiCallType.POST,
-      headers: {
-        'Content-Type': 'multipart/form-data',
-      },
-      params: {
-        'file': file,
-      },
-      bodyType: BodyType.MULTIPART,
-      returnBody: true,
-      encodeBodyUtf8: false,
-      decodeUtf8: false,
-      cache: false,
-    );
-  }
-}
 
 class ApiPagingParams {
   int nextPageNumber = 0;
