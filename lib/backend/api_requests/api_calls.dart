@@ -56,7 +56,7 @@ class UploadSongCall {
   }) {
     return ApiManager.instance.makeApiCall(
       callName: 'Upload Song',
-      apiUrl: '${FirebaseMusicManagerGroup.baseUrl}/upload',
+      apiUrl: '${FirebaseMusicManagerGroup.baseUrl}/upload/${artist}/${song}',
       callType: ApiCallType.POST,
       headers: {
         ...FirebaseMusicManagerGroup.headers,
@@ -65,8 +65,6 @@ class UploadSongCall {
       },
       params: {
         'upload': upload,
-        'song': song,
-        'artist': artist,
       },
       bodyType: BodyType.MULTIPART,
       returnBody: true,
