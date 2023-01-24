@@ -239,8 +239,13 @@ class _DashboardWidgetState extends State<DashboardWidget> {
                                     context: context,
                                     builder: (alertDialogContext) {
                                       return AlertDialog(
-                                        title: Text('Error'),
-                                        content: Text((url?.statusCode ?? 200)
+                                        title: Text((url?.statusCode ?? 200)
+                                            .toString()),
+                                        content: Text(FirebaseMusicManagerGroup
+                                            .getSongURLCall
+                                            .error(
+                                              (url?.jsonBody ?? ''),
+                                            )
                                             .toString()),
                                         actions: [
                                           TextButton(
@@ -317,7 +322,7 @@ class _DashboardWidgetState extends State<DashboardWidget> {
                                 audio: Audio.network(
                                   FFAppState().songUrl,
                                   metas: Metas(
-                                    id: 'sample3.mp3-wa8cnu8g',
+                                    id: 'sample3.mp3-u64r65gd',
                                   ),
                                 ),
                                 titleTextStyle: FlutterFlowTheme.of(context)
