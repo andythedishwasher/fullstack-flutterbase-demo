@@ -317,7 +317,7 @@ class _DashboardWidgetState extends State<DashboardWidget> {
                                 audio: Audio.network(
                                   FFAppState().songUrl,
                                   metas: Metas(
-                                    id: 'sample3.mp3-adr37x7u',
+                                    id: 'sample3.mp3-wa8cnu8g',
                                   ),
                                 ),
                                 titleTextStyle: FlutterFlowTheme.of(context)
@@ -622,17 +622,17 @@ class _DashboardWidgetState extends State<DashboardWidget> {
                                                       builder:
                                                           (alertDialogContext) {
                                                         return AlertDialog(
-                                                          title: Text((apiResulta2r
-                                                                      ?.statusCode ??
-                                                                  200)
-                                                              .toString()),
-                                                          content:
-                                                              Text(getJsonField(
-                                                            (apiResulta2r
-                                                                    ?.jsonBody ??
-                                                                ''),
-                                                            r'''$.signedUrl''',
-                                                          ).toString()),
+                                                          title: Text(
+                                                              'Upload Successful'),
+                                                          content: Text(
+                                                              FirebaseMusicManagerGroup
+                                                                  .uploadSongCall
+                                                                  .downloadUrl(
+                                                                    (apiResulta2r
+                                                                            ?.jsonBody ??
+                                                                        ''),
+                                                                  )
+                                                                  .toString()),
                                                           actions: [
                                                             TextButton(
                                                               onPressed: () =>
@@ -654,13 +654,15 @@ class _DashboardWidgetState extends State<DashboardWidget> {
                                                                       ?.statusCode ??
                                                                   200)
                                                               .toString()),
-                                                          content:
-                                                              Text(getJsonField(
-                                                            (apiResulta2r
-                                                                    ?.jsonBody ??
-                                                                ''),
-                                                            r'''$.error''',
-                                                          ).toString()),
+                                                          content: Text(
+                                                              FirebaseMusicManagerGroup
+                                                                  .uploadSongCall
+                                                                  .error(
+                                                                    (apiResulta2r
+                                                                            ?.jsonBody ??
+                                                                        ''),
+                                                                  )
+                                                                  .toString()),
                                                           actions: [
                                                             TextButton(
                                                               onPressed: () =>

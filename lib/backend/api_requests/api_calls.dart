@@ -45,6 +45,10 @@ class GetSongURLCall {
         response,
         r'''$.url''',
       );
+  dynamic error(dynamic response) => getJsonField(
+        response,
+        r'''$.error''',
+      );
 }
 
 class UploadSongCall {
@@ -64,7 +68,7 @@ class UploadSongCall {
         'Authorization': 'Bearer ${jwtToken}',
       },
       params: {
-        'upload': upload,
+        'file': upload,
       },
       bodyType: BodyType.MULTIPART,
       returnBody: true,
@@ -73,6 +77,15 @@ class UploadSongCall {
       cache: false,
     );
   }
+
+  dynamic downloadUrl(dynamic response) => getJsonField(
+        response,
+        r'''$.url''',
+      );
+  dynamic error(dynamic response) => getJsonField(
+        response,
+        r'''$.error''',
+      );
 }
 
 /// End Firebase Music Manager Group Code
