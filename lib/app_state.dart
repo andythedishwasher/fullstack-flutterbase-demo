@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'flutter_flow/lat_lng.dart';
-import 'dart:convert';
 
 class FFAppState extends ChangeNotifier {
   static final FFAppState _instance = FFAppState._internal();
@@ -31,16 +30,22 @@ class FFAppState extends ChangeNotifier {
     _songFound = _value;
   }
 
-  String _songUrl = '';
-  String get songUrl => _songUrl;
-  set songUrl(String _value) {
-    _songUrl = _value;
+  bool _songUploaded = false;
+  bool get songUploaded => _songUploaded;
+  set songUploaded(bool _value) {
+    _songUploaded = _value;
   }
 
-  dynamic _uploadedFile = jsonDecode('{\"name\":\"\",\"bytes\":[]}');
-  dynamic get uploadedFile => _uploadedFile;
-  set uploadedFile(dynamic _value) {
-    _uploadedFile = _value;
+  String _foundUrl = '';
+  String get foundUrl => _foundUrl;
+  set foundUrl(String _value) {
+    _foundUrl = _value;
+  }
+
+  String _uploadedUrl = '';
+  String get uploadedUrl => _uploadedUrl;
+  set uploadedUrl(String _value) {
+    _uploadedUrl = _value;
   }
 }
 

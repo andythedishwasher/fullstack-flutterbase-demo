@@ -228,7 +228,7 @@ class _DashboardWidgetState extends State<DashboardWidget> {
                                 if (url != null) {
                                   FFAppState().update(() {
                                     FFAppState().songFound = true;
-                                    FFAppState().songUrl =
+                                    FFAppState().foundUrl =
                                         FirebaseMusicManagerGroup.getSongURLCall
                                             .downloadUrl(
                                       (url?.jsonBody ?? ''),
@@ -320,9 +320,9 @@ class _DashboardWidgetState extends State<DashboardWidget> {
                                   EdgeInsetsDirectional.fromSTEB(16, 0, 16, 0),
                               child: FlutterFlowAudioPlayer(
                                 audio: Audio.network(
-                                  FFAppState().songUrl,
+                                  FFAppState().foundUrl,
                                   metas: Metas(
-                                    id: 'sample3.mp3-8221f33x',
+                                    id: 'sample3.mp3-r8xe8b0j',
                                   ),
                                 ),
                                 titleTextStyle: FlutterFlowTheme.of(context)
@@ -344,6 +344,39 @@ class _DashboardWidgetState extends State<DashboardWidget> {
                                     FlutterFlowTheme.of(context).primaryColor,
                                 activeTrackColor: Color(0xFF57636C),
                                 elevation: 4,
+                              ),
+                            ),
+                          if (FFAppState().songFound)
+                            Padding(
+                              padding:
+                                  EdgeInsetsDirectional.fromSTEB(0, 30, 0, 0),
+                              child: FFButtonWidget(
+                                onPressed: () async {
+                                  await launchURL(
+                                      FirebaseMusicManagerGroup.getSongURLCall
+                                          .downloadUrl(
+                                            (url?.jsonBody ?? ''),
+                                          )
+                                          .toString());
+                                },
+                                text: 'Download',
+                                options: FFButtonOptions(
+                                  width: 130,
+                                  height: 40,
+                                  color:
+                                      FlutterFlowTheme.of(context).primaryColor,
+                                  textStyle: FlutterFlowTheme.of(context)
+                                      .subtitle2
+                                      .override(
+                                        fontFamily: 'Poppins',
+                                        color: Colors.white,
+                                      ),
+                                  borderSide: BorderSide(
+                                    color: Colors.transparent,
+                                    width: 1,
+                                  ),
+                                  borderRadius: BorderRadius.circular(8),
+                                ),
                               ),
                             ),
                         ],
@@ -622,33 +655,18 @@ class _DashboardWidgetState extends State<DashboardWidget> {
                                                   if ((apiResulta2r
                                                           ?.succeeded ??
                                                       true)) {
-                                                    await showDialog(
-                                                      context: context,
-                                                      builder:
-                                                          (alertDialogContext) {
-                                                        return AlertDialog(
-                                                          title: Text(
-                                                              'Upload Successful'),
-                                                          content: Text(
-                                                              FirebaseMusicManagerGroup
-                                                                  .uploadSongCall
-                                                                  .downloadUrl(
-                                                                    (apiResulta2r
-                                                                            ?.jsonBody ??
-                                                                        ''),
-                                                                  )
-                                                                  .toString()),
-                                                          actions: [
-                                                            TextButton(
-                                                              onPressed: () =>
-                                                                  Navigator.pop(
-                                                                      alertDialogContext),
-                                                              child: Text('Ok'),
-                                                            ),
-                                                          ],
-                                                        );
-                                                      },
-                                                    );
+                                                    FFAppState().update(() {
+                                                      FFAppState().uploadedUrl =
+                                                          FirebaseMusicManagerGroup
+                                                              .uploadSongCall
+                                                              .downloadUrl(
+                                                        (apiResulta2r
+                                                                ?.jsonBody ??
+                                                            ''),
+                                                      );
+                                                      FFAppState()
+                                                          .songUploaded = true;
+                                                    });
                                                   } else {
                                                     await showDialog(
                                                       context: context,
@@ -709,6 +727,80 @@ class _DashboardWidgetState extends State<DashboardWidget> {
                                             ],
                                           ),
                                         ),
+                                        if (FFAppState().songUploaded)
+                                          FlutterFlowAudioPlayer(
+                                            audio: Audio.network(
+                                              'https://filesamples.com/samples/audio/mp3/sample3.mp3',
+                                              metas: Metas(
+                                                id: 'sample3.mp3-in526trr',
+                                              ),
+                                            ),
+                                            titleTextStyle:
+                                                FlutterFlowTheme.of(context)
+                                                    .bodyText1
+                                                    .override(
+                                                      fontFamily: 'Poppins',
+                                                      fontWeight:
+                                                          FontWeight.w600,
+                                                    ),
+                                            playbackDurationTextStyle:
+                                                FlutterFlowTheme.of(context)
+                                                    .bodyText1
+                                                    .override(
+                                                      fontFamily: 'Poppins',
+                                                      color: Color(0xFF9D9D9D),
+                                                      fontSize: 12,
+                                                    ),
+                                            fillColor: Color(0xFFEEEEEE),
+                                            playbackButtonColor:
+                                                FlutterFlowTheme.of(context)
+                                                    .primaryColor,
+                                            activeTrackColor: Color(0xFF57636C),
+                                            elevation: 4,
+                                          ),
+                                        if (FFAppState().songUploaded)
+                                          Align(
+                                            alignment:
+                                                AlignmentDirectional(0, 0),
+                                            child: Padding(
+                                              padding: EdgeInsetsDirectional
+                                                  .fromSTEB(0, 30, 0, 0),
+                                              child: FFButtonWidget(
+                                                onPressed: () async {
+                                                  await launchURL(
+                                                      FirebaseMusicManagerGroup
+                                                          .uploadSongCall
+                                                          .downloadUrl(
+                                                            (apiResulta2r
+                                                                    ?.jsonBody ??
+                                                                ''),
+                                                          )
+                                                          .toString());
+                                                },
+                                                text: 'Download',
+                                                options: FFButtonOptions(
+                                                  width: 130,
+                                                  height: 40,
+                                                  color: FlutterFlowTheme.of(
+                                                          context)
+                                                      .primaryColor,
+                                                  textStyle: FlutterFlowTheme
+                                                          .of(context)
+                                                      .subtitle2
+                                                      .override(
+                                                        fontFamily: 'Poppins',
+                                                        color: Colors.white,
+                                                      ),
+                                                  borderSide: BorderSide(
+                                                    color: Colors.transparent,
+                                                    width: 1,
+                                                  ),
+                                                  borderRadius:
+                                                      BorderRadius.circular(8),
+                                                ),
+                                              ),
+                                            ),
+                                          ),
                                       ],
                                     ),
                                   ),
