@@ -43,11 +43,11 @@ class GetSongURLCall {
 
   dynamic downloadUrl(dynamic response) => getJsonField(
         response,
-        r'''$.url''',
+        r'''$.url[0]''',
       );
   dynamic error(dynamic response) => getJsonField(
         response,
-        r'''$.error''',
+        r'''$.error[0]''',
       );
 }
 
@@ -80,11 +80,11 @@ class UploadSongCall {
 
   dynamic downloadUrl(dynamic response) => getJsonField(
         response,
-        r'''$.url''',
+        r'''$.url[0]''',
       );
   dynamic error(dynamic response) => getJsonField(
         response,
-        r'''$.error''',
+        r'''$.error[0]''',
       );
 }
 
