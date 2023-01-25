@@ -322,7 +322,7 @@ class _DashboardWidgetState extends State<DashboardWidget> {
                                 audio: Audio.network(
                                   FFAppState().foundUrl,
                                   metas: Metas(
-                                    id: 'sample3.mp3-r8xe8b0j',
+                                    id: 'sample3.mp3-3xqmd81h',
                                   ),
                                 ),
                                 titleTextStyle: FlutterFlowTheme.of(context)
@@ -732,7 +732,7 @@ class _DashboardWidgetState extends State<DashboardWidget> {
                                             audio: Audio.network(
                                               'https://filesamples.com/samples/audio/mp3/sample3.mp3',
                                               metas: Metas(
-                                                id: 'sample3.mp3-in526trr',
+                                                id: 'sample3.mp3-s2wpsueh',
                                               ),
                                             ),
                                             titleTextStyle:
