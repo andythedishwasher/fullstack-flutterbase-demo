@@ -346,7 +346,7 @@ class _LoginWidgetState extends State<LoginWidget> {
                                                   .update(usersUpdateData);
 
                                               context.goNamedAuth(
-                                                  'Dashboard', mounted);
+                                                  'samplepool', mounted);
                                             },
                                             text: 'Login',
                                             options: FFButtonOptions(
@@ -463,7 +463,7 @@ class _LoginWidgetState extends State<LoginWidget> {
                                                       .update(usersUpdateData);
 
                                                   context.goNamedAuth(
-                                                      'Dashboard', mounted);
+                                                      'samplepool', mounted);
                                                 },
                                                 child: Container(
                                                   width: 50,
@@ -502,7 +502,7 @@ class _LoginWidgetState extends State<LoginWidget> {
                                                   }
 
                                                   context.goNamedAuth(
-                                                      'Dashboard', mounted);
+                                                      'samplepool', mounted);
                                                 },
                                                 child: Container(
                                                   width: 50,
@@ -857,7 +857,7 @@ class _LoginWidgetState extends State<LoginWidget> {
                                                   .update(usersUpdateData);
 
                                               context.goNamedAuth(
-                                                  'Dashboard', mounted);
+                                                  'samplepool', mounted);
                                             },
                                             text: 'Create Account',
                                             options: FFButtonOptions(
@@ -945,7 +945,7 @@ class _LoginWidgetState extends State<LoginWidget> {
                                                       .update(usersUpdateData);
 
                                                   context.goNamedAuth(
-                                                      'Dashboard', mounted);
+                                                      'samplepool', mounted);
                                                 },
                                                 child: Container(
                                                   width: 50,
@@ -984,7 +984,7 @@ class _LoginWidgetState extends State<LoginWidget> {
                                                   }
 
                                                   context.goNamedAuth(
-                                                      'Dashboard', mounted);
+                                                      'samplepool', mounted);
                                                 },
                                                 child: Container(
                                                   width: 50,

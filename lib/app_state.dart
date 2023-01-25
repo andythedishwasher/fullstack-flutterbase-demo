@@ -24,22 +24,10 @@ class FFAppState extends ChangeNotifier {
 
   late SharedPreferences prefs;
 
-  bool _songFound = false;
-  bool get songFound => _songFound;
-  set songFound(bool _value) {
-    _songFound = _value;
-  }
-
   bool _songUploaded = false;
   bool get songUploaded => _songUploaded;
   set songUploaded(bool _value) {
     _songUploaded = _value;
-  }
-
-  String _foundUrl = '';
-  String get foundUrl => _foundUrl;
-  set foundUrl(String _value) {
-    _foundUrl = _value;
   }
 
   String _uploadedUrl = '';

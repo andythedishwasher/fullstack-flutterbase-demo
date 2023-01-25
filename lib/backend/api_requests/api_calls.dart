@@ -17,6 +17,8 @@ class FirebaseMusicManagerGroup {
   static Map<String, String> headers = {};
   static GetSongURLCall getSongURLCall = GetSongURLCall();
   static UploadSongCall uploadSongCall = UploadSongCall();
+  static ClaimSampleCall claimSampleCall = ClaimSampleCall();
+  static GetAllSamplesCall getAllSamplesCall = GetAllSamplesCall();
 }
 
 class GetSongURLCall {
@@ -85,6 +87,75 @@ class UploadSongCall {
   dynamic error(dynamic response) => getJsonField(
         response,
         r'''$.error[0]''',
+      );
+}
+
+class ClaimSampleCall {
+  Future<ApiCallResponse> call({
+    String? claimant = '',
+    String? artist = '',
+    String? song = '',
+    String? jwtToken = '',
+  }) {
+    return ApiManager.instance.makeApiCall(
+      callName: 'Claim Sample',
+      apiUrl:
+          '${FirebaseMusicManagerGroup.baseUrl}/claim/${claimant}/${artist}/${song}',
+      callType: ApiCallType.GET,
+      headers: {
+        ...FirebaseMusicManagerGroup.headers,
+        'Authorization': 'Bearer ${jwtToken}',
+      },
+      params: {},
+      returnBody: true,
+      encodeBodyUtf8: false,
+      decodeUtf8: false,
+      cache: false,
+    );
+  }
+
+  dynamic success(dynamic response) => getJsonField(
+        response,
+        r'''$.success''',
+      );
+  dynamic error(dynamic response) => getJsonField(
+        response,
+        r'''$.error''',
+      );
+}
+
+class GetAllSamplesCall {
+  Future<ApiCallResponse> call({
+    String? jwtToken = '',
+  }) {
+    return ApiManager.instance.makeApiCall(
+      callName: 'Get All Samples',
+      apiUrl: '${FirebaseMusicManagerGroup.baseUrl}/samples',
+      callType: ApiCallType.GET,
+      headers: {
+        ...FirebaseMusicManagerGroup.headers,
+        'Authorization': 'Bearer ${jwtToken}',
+      },
+      params: {},
+      returnBody: true,
+      encodeBodyUtf8: false,
+      decodeUtf8: false,
+      cache: false,
+    );
+  }
+
+  dynamic fileRecords(dynamic response) => getJsonField(
+        response,
+        r'''$.fileRecords''',
+        true,
+      );
+  dynamic urlError(dynamic response) => getJsonField(
+        response,
+        r'''$.urlError''',
+      );
+  dynamic metadataError(dynamic response) => getJsonField(
+        response,
+        r'''$.metadataError''',
       );
 }
 

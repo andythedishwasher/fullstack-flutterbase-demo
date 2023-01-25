@@ -110,8 +110,17 @@ class ParameterData {
 
 final parametersBuilderMap =
     <String, Future<ParameterData> Function(Map<String, dynamic>)>{
-  'Dashboard': ParameterData.none(),
   'Login': ParameterData.none(),
+  'samplepool': ParameterData.none(),
+  'newsample': (data) async => ParameterData(
+        allParams: {
+          'downloadUrl': getParameter<String>(data, 'downloadUrl'),
+          'artist': getParameter<String>(data, 'artist'),
+          'title': getParameter<String>(data, 'title'),
+          'audioPath': getParameter<String>(data, 'audioPath'),
+        },
+      ),
+  'upload': ParameterData.none(),
 };
 
 Map<String, dynamic> getInitialParameterData(Map<String, dynamic> data) {

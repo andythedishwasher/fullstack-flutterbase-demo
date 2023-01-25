@@ -71,23 +71,38 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
       debugLogDiagnostics: true,
       refreshListenable: appStateNotifier,
       errorBuilder: (context, _) =>
-          appStateNotifier.loggedIn ? DashboardWidget() : LoginWidget(),
+          appStateNotifier.loggedIn ? SamplepoolWidget() : LoginWidget(),
       routes: [
         FFRoute(
           name: '_initialize',
           path: '/',
           builder: (context, _) =>
-              appStateNotifier.loggedIn ? DashboardWidget() : LoginWidget(),
+              appStateNotifier.loggedIn ? SamplepoolWidget() : LoginWidget(),
           routes: [
-            FFRoute(
-              name: 'Dashboard',
-              path: 'dashboard',
-              builder: (context, params) => DashboardWidget(),
-            ),
             FFRoute(
               name: 'Login',
               path: 'login',
               builder: (context, params) => LoginWidget(),
+            ),
+            FFRoute(
+              name: 'samplepool',
+              path: 'samplepool',
+              builder: (context, params) => SamplepoolWidget(),
+            ),
+            FFRoute(
+              name: 'newsample',
+              path: 'newsample',
+              builder: (context, params) => NewsampleWidget(
+                downloadUrl: params.getParam('downloadUrl', ParamType.String),
+                artist: params.getParam('artist', ParamType.String),
+                title: params.getParam('title', ParamType.String),
+                audioPath: params.getParam('audioPath', ParamType.String),
+              ),
+            ),
+            FFRoute(
+              name: 'upload',
+              path: 'upload',
+              builder: (context, params) => UploadWidget(),
             )
           ].map((r) => r.toRoute(appStateNotifier)).toList(),
         ).toRoute(appStateNotifier),
