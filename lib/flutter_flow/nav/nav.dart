@@ -85,11 +85,6 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
               builder: (context, params) => LoginWidget(),
             ),
             FFRoute(
-              name: 'samplepool',
-              path: 'samplepool',
-              builder: (context, params) => SamplepoolWidget(),
-            ),
-            FFRoute(
               name: 'newsample',
               path: 'newsample',
               builder: (context, params) => NewsampleWidget(
@@ -103,6 +98,11 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
               name: 'upload',
               path: 'upload',
               builder: (context, params) => UploadWidget(),
+            ),
+            FFRoute(
+              name: 'samplepool',
+              path: 'samplepool',
+              builder: (context, params) => SamplepoolWidget(),
             )
           ].map((r) => r.toRoute(appStateNotifier)).toList(),
         ).toRoute(appStateNotifier),
