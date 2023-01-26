@@ -15,42 +15,9 @@ class FirebaseMusicManagerGroup {
   static String baseUrl =
       'https://us-central1-fullstack-flutterbase-demo.cloudfunctions.net/musicManager';
   static Map<String, String> headers = {};
-  static GetSongURLCall getSongURLCall = GetSongURLCall();
   static UploadSongCall uploadSongCall = UploadSongCall();
   static ClaimSampleCall claimSampleCall = ClaimSampleCall();
   static GetAllSamplesCall getAllSamplesCall = GetAllSamplesCall();
-}
-
-class GetSongURLCall {
-  Future<ApiCallResponse> call({
-    String? artist = '',
-    String? song = '',
-    String? jwtToken = '',
-  }) {
-    return ApiManager.instance.makeApiCall(
-      callName: 'Get Song URL',
-      apiUrl: '${FirebaseMusicManagerGroup.baseUrl}/${artist}/${song}',
-      callType: ApiCallType.GET,
-      headers: {
-        ...FirebaseMusicManagerGroup.headers,
-        'Authorization': 'Bearer ${jwtToken}',
-      },
-      params: {},
-      returnBody: true,
-      encodeBodyUtf8: false,
-      decodeUtf8: false,
-      cache: false,
-    );
-  }
-
-  dynamic downloadUrl(dynamic response) => getJsonField(
-        response,
-        r'''$.url[0]''',
-      );
-  dynamic error(dynamic response) => getJsonField(
-        response,
-        r'''$.error[0]''',
-      );
 }
 
 class UploadSongCall {
@@ -144,9 +111,9 @@ class GetAllSamplesCall {
     );
   }
 
-  dynamic fileRecords(dynamic response) => getJsonField(
+  dynamic urls(dynamic response) => getJsonField(
         response,
-        r'''$.fileRecords''',
+        r'''$.urls''',
         true,
       );
   dynamic urlError(dynamic response) => getJsonField(
@@ -156,6 +123,16 @@ class GetAllSamplesCall {
   dynamic metadataError(dynamic response) => getJsonField(
         response,
         r'''$.metadataError''',
+      );
+  dynamic artists(dynamic response) => getJsonField(
+        response,
+        r'''$.artists''',
+        true,
+      );
+  dynamic titles(dynamic response) => getJsonField(
+        response,
+        r'''$.titles''',
+        true,
       );
 }
 

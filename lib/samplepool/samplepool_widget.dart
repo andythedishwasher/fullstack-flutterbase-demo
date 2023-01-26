@@ -32,67 +32,63 @@ class _SamplepoolWidgetState extends State<SamplepoolWidget> {
   Widget build(BuildContext context) {
     context.watch<FFAppState>();
 
-    return Scaffold(
-      key: scaffoldKey,
-      backgroundColor: FlutterFlowTheme.of(context).primaryBackground,
-      appBar: AppBar(
-        backgroundColor: FlutterFlowTheme.of(context).primaryColor,
-        automaticallyImplyLeading: false,
-        title: Align(
-          alignment: AlignmentDirectional(0, 0),
-          child: Text(
-            'Sample Pool',
-            style: FlutterFlowTheme.of(context).title2.override(
-                  fontFamily: 'Poppins',
-                  color: Colors.white,
-                  fontSize: 22,
-                ),
+    return FutureBuilder<ApiCallResponse>(
+      future: (_apiRequestCompleter ??= Completer<ApiCallResponse>()
+            ..complete(FirebaseMusicManagerGroup.getAllSamplesCall.call(
+              jwtToken: currentJwtToken,
+            )))
+          .future,
+      builder: (context, snapshot) {
+        // Customize what your widget looks like when it's loading.
+        if (!snapshot.hasData) {
+          return Center(
+            child: SizedBox(
+              width: 50,
+              height: 50,
+              child: CircularProgressIndicator(
+                color: FlutterFlowTheme.of(context).primaryColor,
+              ),
+            ),
+          );
+        }
+        final samplepoolGetAllSamplesResponse = snapshot.data!;
+        return Scaffold(
+          key: scaffoldKey,
+          backgroundColor: FlutterFlowTheme.of(context).primaryBackground,
+          appBar: AppBar(
+            backgroundColor: FlutterFlowTheme.of(context).primaryColor,
+            automaticallyImplyLeading: false,
+            title: Align(
+              alignment: AlignmentDirectional(0, 0),
+              child: Text(
+                'Sample Pool',
+                style: FlutterFlowTheme.of(context).title2.override(
+                      fontFamily: 'Poppins',
+                      color: Colors.white,
+                      fontSize: 22,
+                    ),
+              ),
+            ),
+            actions: [],
+            centerTitle: false,
+            elevation: 2,
           ),
-        ),
-        actions: [],
-        centerTitle: false,
-        elevation: 2,
-      ),
-      body: SafeArea(
-        child: GestureDetector(
-          onTap: () => FocusScope.of(context).requestFocus(_unfocusNode),
-          child: Column(
-            mainAxisSize: MainAxisSize.max,
-            children: [
-              SingleChildScrollView(
-                child: Column(
-                  mainAxisSize: MainAxisSize.max,
-                  children: [
-                    FutureBuilder<ApiCallResponse>(
-                      future:
-                          (_apiRequestCompleter ??= Completer<ApiCallResponse>()
-                                ..complete(FirebaseMusicManagerGroup
-                                    .getAllSamplesCall
-                                    .call(
-                                  jwtToken: currentJwtToken,
-                                )))
-                              .future,
-                      builder: (context, snapshot) {
-                        // Customize what your widget looks like when it's loading.
-                        if (!snapshot.hasData) {
-                          return Center(
-                            child: SizedBox(
-                              width: 50,
-                              height: 50,
-                              child: CircularProgressIndicator(
-                                color:
-                                    FlutterFlowTheme.of(context).primaryColor,
-                              ),
-                            ),
-                          );
-                        }
-                        final listViewGetAllSamplesResponse = snapshot.data!;
-                        return Builder(
+          body: SafeArea(
+            child: GestureDetector(
+              onTap: () => FocusScope.of(context).requestFocus(_unfocusNode),
+              child: Column(
+                mainAxisSize: MainAxisSize.max,
+                children: [
+                  SingleChildScrollView(
+                    child: Column(
+                      mainAxisSize: MainAxisSize.max,
+                      children: [
+                        Builder(
                           builder: (context) {
-                            final fileRecords =
+                            final urls =
                                 FirebaseMusicManagerGroup.getAllSamplesCall
-                                        .fileRecords(
-                                          listViewGetAllSamplesResponse
+                                        .urls(
+                                          samplepoolGetAllSamplesResponse
                                               .jsonBody,
                                         )
                                         ?.toList() ??
@@ -106,10 +102,9 @@ class _SamplepoolWidgetState extends State<SamplepoolWidget> {
                                 padding: EdgeInsets.zero,
                                 shrinkWrap: true,
                                 scrollDirection: Axis.vertical,
-                                itemCount: fileRecords.length,
-                                itemBuilder: (context, fileRecordsIndex) {
-                                  final fileRecordsItem =
-                                      fileRecords[fileRecordsIndex];
+                                itemCount: urls.length,
+                                itemBuilder: (context, urlsIndex) {
+                                  final urlsItem = urls[urlsIndex];
                                   return Container(
                                     decoration: BoxDecoration(
                                       color: FlutterFlowTheme.of(context)
@@ -123,10 +118,14 @@ class _SamplepoolWidgetState extends State<SamplepoolWidget> {
                                               EdgeInsetsDirectional.fromSTEB(
                                                   0, 10, 0, 10),
                                           child: Text(
-                                            getJsonField(
-                                              fileRecordsItem,
-                                              r'''$.artist''',
-                                            ).toString(),
+                                            FirebaseMusicManagerGroup
+                                                .getAllSamplesCall
+                                                .artists(
+                                                  samplepoolGetAllSamplesResponse
+                                                      .jsonBody,
+                                                )
+                                                .toString()[urlsIndex]
+                                                .toString(),
                                             style: FlutterFlowTheme.of(context)
                                                 .bodyText1,
                                           ),
@@ -137,16 +136,17 @@ class _SamplepoolWidgetState extends State<SamplepoolWidget> {
                                                   20, 0, 20, 10),
                                           child: FlutterFlowAudioPlayer(
                                             audio: Audio.network(
-                                              getJsonField(
-                                                fileRecordsItem,
-                                                r'''$.url''',
-                                              ),
+                                              urlsItem,
                                               metas: Metas(
-                                                id: 'sample3.mp3-x3auc06j',
-                                                title: getJsonField(
-                                                  fileRecordsItem,
-                                                  r'''$.title''',
-                                                ).toString(),
+                                                id: 'sample3.mp3-72f540wi',
+                                                title: FirebaseMusicManagerGroup
+                                                    .getAllSamplesCall
+                                                    .titles(
+                                                      samplepoolGetAllSamplesResponse
+                                                          .jsonBody,
+                                                    )
+                                                    .toString()[urlsIndex]
+                                                    .toString(),
                                               ),
                                             ),
                                             titleTextStyle:
@@ -181,11 +181,11 @@ class _SamplepoolWidgetState extends State<SamplepoolWidget> {
                                                     .call(
                                               claimant: currentUserDisplayName,
                                               artist: getJsonField(
-                                                fileRecordsItem,
+                                                urlsItem,
                                                 r'''$.artist''',
                                               ).toString(),
                                               song: getJsonField(
-                                                fileRecordsItem,
+                                                urlsItem,
                                                 r'''$.title''',
                                               ).toString(),
                                             );
@@ -275,39 +275,66 @@ class _SamplepoolWidgetState extends State<SamplepoolWidget> {
                               ),
                             );
                           },
-                        );
-                      },
-                    ),
-                  ],
-                ),
-              ),
-              Padding(
-                padding: EdgeInsetsDirectional.fromSTEB(0, 20, 0, 0),
-                child: FFButtonWidget(
-                  onPressed: () {
-                    print('Button pressed ...');
-                  },
-                  text: 'Upload Track',
-                  options: FFButtonOptions(
-                    width: 150,
-                    height: 40,
-                    color: FlutterFlowTheme.of(context).primaryColor,
-                    textStyle: FlutterFlowTheme.of(context).subtitle2.override(
-                          fontFamily: 'Poppins',
-                          color: Colors.white,
                         ),
-                    borderSide: BorderSide(
-                      color: Colors.transparent,
-                      width: 1,
+                        if (FirebaseMusicManagerGroup.getAllSamplesCall
+                                .urlError(
+                              samplepoolGetAllSamplesResponse.jsonBody,
+                            ) !=
+                            null)
+                          Text(
+                            FirebaseMusicManagerGroup.getAllSamplesCall
+                                .urlError(
+                                  samplepoolGetAllSamplesResponse.jsonBody,
+                                )
+                                .toString(),
+                            style: FlutterFlowTheme.of(context).bodyText1,
+                          ),
+                        if (FirebaseMusicManagerGroup.getAllSamplesCall
+                                .metadataError(
+                              samplepoolGetAllSamplesResponse.jsonBody,
+                            ) !=
+                            null)
+                          Text(
+                            FirebaseMusicManagerGroup.getAllSamplesCall
+                                .metadataError(
+                                  samplepoolGetAllSamplesResponse.jsonBody,
+                                )
+                                .toString(),
+                            style: FlutterFlowTheme.of(context).bodyText1,
+                          ),
+                      ],
                     ),
-                    borderRadius: BorderRadius.circular(8),
                   ),
-                ),
+                  Padding(
+                    padding: EdgeInsetsDirectional.fromSTEB(0, 20, 0, 0),
+                    child: FFButtonWidget(
+                      onPressed: () {
+                        print('Button pressed ...');
+                      },
+                      text: 'Upload Track',
+                      options: FFButtonOptions(
+                        width: 150,
+                        height: 40,
+                        color: FlutterFlowTheme.of(context).primaryColor,
+                        textStyle:
+                            FlutterFlowTheme.of(context).subtitle2.override(
+                                  fontFamily: 'Poppins',
+                                  color: Colors.white,
+                                ),
+                        borderSide: BorderSide(
+                          color: Colors.transparent,
+                          width: 1,
+                        ),
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                    ),
+                  ),
+                ],
               ),
-            ],
+            ),
           ),
-        ),
-      ),
+        );
+      },
     );
   }
 
