@@ -102,7 +102,7 @@ class _NewsampleWidgetState extends State<NewsampleWidget> {
                   audio: Audio.network(
                     widget.audioPath!,
                     metas: Metas(
-                      id: 'sample3.mp3-0gwmpzqh',
+                      id: 'sample3.mp3-t1no1doy',
                     ),
                   ),
                   titleTextStyle:

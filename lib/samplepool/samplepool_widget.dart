@@ -101,14 +101,14 @@ class _SamplepoolWidgetState extends State<SamplepoolWidget> {
                   children: [
                     Builder(
                       builder: (context) {
-                        final urls = FFAppState().samples.toList();
+                        final sampleList = FFAppState().samples.toList();
                         return ListView.builder(
                           padding: EdgeInsets.zero,
                           shrinkWrap: true,
                           scrollDirection: Axis.vertical,
-                          itemCount: urls.length,
-                          itemBuilder: (context, urlsIndex) {
-                            final urlsItem = urls[urlsIndex];
+                          itemCount: sampleList.length,
+                          itemBuilder: (context, sampleListIndex) {
+                            final sampleListItem = sampleList[sampleListIndex];
                             return Container(
                               decoration: BoxDecoration(
                                 color: FlutterFlowTheme.of(context)
@@ -122,7 +122,7 @@ class _SamplepoolWidgetState extends State<SamplepoolWidget> {
                                         0, 10, 0, 10),
                                     child: Text(
                                       getJsonField(
-                                        urlsItem,
+                                        sampleListItem,
                                         r'''$.artist''',
                                       ).toString(),
                                       style: FlutterFlowTheme.of(context)
@@ -135,13 +135,13 @@ class _SamplepoolWidgetState extends State<SamplepoolWidget> {
                                     child: FlutterFlowAudioPlayer(
                                       audio: Audio.network(
                                         getJsonField(
-                                          urlsItem,
+                                          sampleListItem,
                                           r'''$.url''',
                                         ),
                                         metas: Metas(
-                                          id: 'sample3.mp3-w1iv7ik9',
+                                          id: 'sample3.mp3-l68japl6',
                                           title: getJsonField(
-                                            urlsItem,
+                                            sampleListItem,
                                             r'''$.title''',
                                           ).toString(),
                                         ),
@@ -177,11 +177,11 @@ class _SamplepoolWidgetState extends State<SamplepoolWidget> {
                                               .call(
                                         claimant: currentUserDisplayName,
                                         artist: getJsonField(
-                                          urlsItem,
+                                          sampleListItem,
                                           r'''$.artist''',
                                         ).toString(),
                                         song: getJsonField(
-                                          urlsItem,
+                                          sampleListItem,
                                           r'''$.title''',
                                         ).toString(),
                                       );
