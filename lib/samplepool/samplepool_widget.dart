@@ -31,28 +31,12 @@ class _SamplepoolWidgetState extends State<SamplepoolWidget> {
         jwtToken: currentJwtToken,
       );
       if ((samples?.succeeded ?? true)) {
-        setState(() {
-          FFAppState().sampleUrls =
-              (FirebaseMusicManagerGroup.getAllSamplesCall.urls(
-            (samples?.jsonBody ?? ''),
-          ) as List)
-                  .map<String>((s) => s.toString())
-                  .toList()!
-                  .toList();
-          FFAppState().sampleArtists =
-              (FirebaseMusicManagerGroup.getAllSamplesCall.artists(
-            (samples?.jsonBody ?? ''),
-          ) as List)
-                  .map<String>((s) => s.toString())
-                  .toList()!
-                  .toList();
-          FFAppState().sampleTitles =
-              (FirebaseMusicManagerGroup.getAllSamplesCall.titles(
-            (samples?.jsonBody ?? ''),
-          ) as List)
-                  .map<String>((s) => s.toString())
-                  .toList()!
-                  .toList();
+        FFAppState().update(() {
+          FFAppState().samples = FirebaseMusicManagerGroup.getAllSamplesCall
+              .samples(
+                (samples?.jsonBody ?? ''),
+              )!
+              .toList();
         });
       } else {
         await showDialog(
@@ -117,12 +101,7 @@ class _SamplepoolWidgetState extends State<SamplepoolWidget> {
                   children: [
                     Builder(
                       builder: (context) {
-                        final urls = FirebaseMusicManagerGroup.getAllSamplesCall
-                                .urls(
-                                  (samples?.jsonBody ?? ''),
-                                )
-                                ?.toList() ??
-                            [];
+                        final urls = FFAppState().samples.toList();
                         return ListView.builder(
                           padding: EdgeInsets.zero,
                           shrinkWrap: true,
@@ -142,13 +121,10 @@ class _SamplepoolWidgetState extends State<SamplepoolWidget> {
                                     padding: EdgeInsetsDirectional.fromSTEB(
                                         0, 10, 0, 10),
                                     child: Text(
-                                      FirebaseMusicManagerGroup
-                                          .getAllSamplesCall
-                                          .artists(
-                                            (samples?.jsonBody ?? ''),
-                                          )
-                                          .toString()[urlsIndex]
-                                          .toString(),
+                                      getJsonField(
+                                        urlsItem,
+                                        r'''$.artist''',
+                                      ).toString(),
                                       style: FlutterFlowTheme.of(context)
                                           .bodyText1,
                                     ),
@@ -158,16 +134,16 @@ class _SamplepoolWidgetState extends State<SamplepoolWidget> {
                                         20, 0, 20, 10),
                                     child: FlutterFlowAudioPlayer(
                                       audio: Audio.network(
-                                        urlsItem,
+                                        getJsonField(
+                                          urlsItem,
+                                          r'''$.url''',
+                                        ),
                                         metas: Metas(
-                                          id: 'sample3.mp3-2txijpo4',
-                                          title: FirebaseMusicManagerGroup
-                                              .getAllSamplesCall
-                                              .titles(
-                                                (samples?.jsonBody ?? ''),
-                                              )
-                                              .toString()[urlsIndex]
-                                              .toString(),
+                                          id: 'sample3.mp3-w1iv7ik9',
+                                          title: getJsonField(
+                                            urlsItem,
+                                            r'''$.title''',
+                                          ).toString(),
                                         ),
                                       ),
                                       titleTextStyle:

@@ -111,9 +111,9 @@ class GetAllSamplesCall {
     );
   }
 
-  dynamic urls(dynamic response) => getJsonField(
+  dynamic samples(dynamic response) => getJsonField(
         response,
-        r'''$.urls''',
+        r'''$.samples''',
         true,
       );
   dynamic urlError(dynamic response) => getJsonField(
@@ -123,16 +123,6 @@ class GetAllSamplesCall {
   dynamic metadataError(dynamic response) => getJsonField(
         response,
         r'''$.metadataError''',
-      );
-  dynamic artists(dynamic response) => getJsonField(
-        response,
-        r'''$.artists''',
-        true,
-      );
-  dynamic titles(dynamic response) => getJsonField(
-        response,
-        r'''$.titles''',
-        true,
       );
 }
 

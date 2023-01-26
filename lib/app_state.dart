@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'flutter_flow/lat_lng.dart';
+import 'dart:convert';
 
 class FFAppState extends ChangeNotifier {
   static final FFAppState _instance = FFAppState._internal();
@@ -36,46 +37,18 @@ class FFAppState extends ChangeNotifier {
     _uploadedUrl = _value;
   }
 
-  List<String> _sampleUrls = [];
-  List<String> get sampleUrls => _sampleUrls;
-  set sampleUrls(List<String> _value) {
-    _sampleUrls = _value;
+  List<dynamic> _samples = [];
+  List<dynamic> get samples => _samples;
+  set samples(List<dynamic> _value) {
+    _samples = _value;
   }
 
-  void addToSampleUrls(String _value) {
-    _sampleUrls.add(_value);
+  void addToSamples(dynamic _value) {
+    _samples.add(_value);
   }
 
-  void removeFromSampleUrls(String _value) {
-    _sampleUrls.remove(_value);
-  }
-
-  List<String> _sampleArtists = [];
-  List<String> get sampleArtists => _sampleArtists;
-  set sampleArtists(List<String> _value) {
-    _sampleArtists = _value;
-  }
-
-  void addToSampleArtists(String _value) {
-    _sampleArtists.add(_value);
-  }
-
-  void removeFromSampleArtists(String _value) {
-    _sampleArtists.remove(_value);
-  }
-
-  List<String> _sampleTitles = [];
-  List<String> get sampleTitles => _sampleTitles;
-  set sampleTitles(List<String> _value) {
-    _sampleTitles = _value;
-  }
-
-  void addToSampleTitles(String _value) {
-    _sampleTitles.add(_value);
-  }
-
-  void removeFromSampleTitles(String _value) {
-    _sampleTitles.remove(_value);
+  void removeFromSamples(dynamic _value) {
+    _samples.remove(_value);
   }
 }
 
