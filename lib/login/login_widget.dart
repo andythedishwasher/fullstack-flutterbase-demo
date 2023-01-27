@@ -1,7 +1,9 @@
 import '../auth/auth_util.dart';
+import '../backend/backend.dart';
 import '../flutter_flow/flutter_flow_theme.dart';
 import '../flutter_flow/flutter_flow_util.dart';
 import '../flutter_flow/flutter_flow_widgets.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -335,8 +337,16 @@ class _LoginWidgetState extends State<LoginWidget> {
                                                 return;
                                               }
 
+                                              final usersUpdateData = {
+                                                'fcm_tokens':
+                                                    FieldValue.arrayUnion(
+                                                        [currentJwtToken]),
+                                              };
+                                              await currentUserReference!
+                                                  .update(usersUpdateData);
+
                                               context.goNamedAuth(
-                                                  'Dashboard', mounted);
+                                                  'samplepool', mounted);
                                             },
                                             text: 'Login',
                                             options: FFButtonOptions(
@@ -444,8 +454,16 @@ class _LoginWidgetState extends State<LoginWidget> {
                                                     return;
                                                   }
 
+                                                  final usersUpdateData = {
+                                                    'fcm_tokens':
+                                                        FieldValue.arrayUnion(
+                                                            [currentJwtToken]),
+                                                  };
+                                                  await currentUserReference!
+                                                      .update(usersUpdateData);
+
                                                   context.goNamedAuth(
-                                                      'Dashboard', mounted);
+                                                      'samplepool', mounted);
                                                 },
                                                 child: Container(
                                                   width: 50,
@@ -484,7 +502,7 @@ class _LoginWidgetState extends State<LoginWidget> {
                                                   }
 
                                                   context.goNamedAuth(
-                                                      'Dashboard', mounted);
+                                                      'samplepool', mounted);
                                                 },
                                                 child: Container(
                                                   width: 50,
@@ -830,8 +848,16 @@ class _LoginWidgetState extends State<LoginWidget> {
                                                 return;
                                               }
 
+                                              final usersUpdateData = {
+                                                'fcm_tokens':
+                                                    FieldValue.arrayUnion(
+                                                        [currentJwtToken]),
+                                              };
+                                              await currentUserReference!
+                                                  .update(usersUpdateData);
+
                                               context.goNamedAuth(
-                                                  'Dashboard', mounted);
+                                                  'samplepool', mounted);
                                             },
                                             text: 'Create Account',
                                             options: FFButtonOptions(
@@ -910,8 +936,16 @@ class _LoginWidgetState extends State<LoginWidget> {
                                                     return;
                                                   }
 
+                                                  final usersUpdateData = {
+                                                    'fcm_tokens':
+                                                        FieldValue.arrayUnion(
+                                                            [currentJwtToken]),
+                                                  };
+                                                  await currentUserReference!
+                                                      .update(usersUpdateData);
+
                                                   context.goNamedAuth(
-                                                      'Dashboard', mounted);
+                                                      'samplepool', mounted);
                                                 },
                                                 child: Container(
                                                   width: 50,
@@ -950,7 +984,7 @@ class _LoginWidgetState extends State<LoginWidget> {
                                                   }
 
                                                   context.goNamedAuth(
-                                                      'Dashboard', mounted);
+                                                      'samplepool', mounted);
                                                 },
                                                 child: Container(
                                                   width: 50,

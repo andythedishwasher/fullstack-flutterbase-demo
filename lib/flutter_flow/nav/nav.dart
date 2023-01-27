@@ -7,6 +7,8 @@ import '../flutter_flow_theme.dart';
 import '../../backend/backend.dart';
 
 import '../../auth/firebase_user_provider.dart';
+import '../../backend/push_notifications/push_notifications_handler.dart'
+    show PushNotificationsHandler;
 
 import '../../index.dart';
 import '../../main.dart';
@@ -69,13 +71,13 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
       debugLogDiagnostics: true,
       refreshListenable: appStateNotifier,
       errorBuilder: (context, _) =>
-          appStateNotifier.loggedIn ? DashboardWidget() : LoginWidget(),
+          appStateNotifier.loggedIn ? SamplepoolWidget() : LoginWidget(),
       routes: [
         FFRoute(
           name: '_initialize',
           path: '/',
           builder: (context, _) =>
-              appStateNotifier.loggedIn ? DashboardWidget() : LoginWidget(),
+              appStateNotifier.loggedIn ? SamplepoolWidget() : LoginWidget(),
           routes: [
             FFRoute(
               name: 'Login',
@@ -83,9 +85,24 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
               builder: (context, params) => LoginWidget(),
             ),
             FFRoute(
-              name: 'Dashboard',
-              path: 'dashboard',
-              builder: (context, params) => DashboardWidget(),
+              name: 'newsample',
+              path: 'newsample',
+              builder: (context, params) => NewsampleWidget(
+                downloadUrl: params.getParam('downloadUrl', ParamType.String),
+                artist: params.getParam('artist', ParamType.String),
+                title: params.getParam('title', ParamType.String),
+                audioPath: params.getParam('audioPath', ParamType.String),
+              ),
+            ),
+            FFRoute(
+              name: 'upload',
+              path: 'upload',
+              builder: (context, params) => UploadWidget(),
+            ),
+            FFRoute(
+              name: 'samplepool',
+              path: 'samplepool',
+              builder: (context, params) => SamplepoolWidget(),
             )
           ].map((r) => r.toRoute(appStateNotifier)).toList(),
         ).toRoute(appStateNotifier),
@@ -267,7 +284,7 @@ class FFRoute {
                     ),
                   ),
                 )
-              : page;
+              : PushNotificationsHandler(child: page);
 
           final transitionInfo = state.transitionInfo;
           return transitionInfo.hasTransition

@@ -1,3 +1,5 @@
 // Export pages
 export 'login/login_widget.dart' show LoginWidget;
-export 'dashboard/dashboard_widget.dart' show DashboardWidget;
+export 'newsample/newsample_widget.dart' show NewsampleWidget;
+export 'upload/upload_widget.dart' show UploadWidget;
+export 'samplepool/samplepool_widget.dart' show SamplepoolWidget;

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'flutter_flow/lat_lng.dart';
+import 'dart:convert';
 
 class FFAppState extends ChangeNotifier {
   static final FFAppState _instance = FFAppState._internal();
@@ -24,28 +25,30 @@ class FFAppState extends ChangeNotifier {
 
   late SharedPreferences prefs;
 
-  bool _songFound = false;
-  bool get songFound => _songFound;
-  set songFound(bool _value) {
-    _songFound = _value;
-  }
-
   bool _songUploaded = false;
   bool get songUploaded => _songUploaded;
   set songUploaded(bool _value) {
     _songUploaded = _value;
   }
 
-  String _foundUrl = '';
-  String get foundUrl => _foundUrl;
-  set foundUrl(String _value) {
-    _foundUrl = _value;
-  }
-
   String _uploadedUrl = '';
   String get uploadedUrl => _uploadedUrl;
   set uploadedUrl(String _value) {
     _uploadedUrl = _value;
+  }
+
+  List<dynamic> _samples = [];
+  List<dynamic> get samples => _samples;
+  set samples(List<dynamic> _value) {
+    _samples = _value;
+  }
+
+  void addToSamples(dynamic _value) {
+    _samples.add(_value);
+  }
+
+  void removeFromSamples(dynamic _value) {
+    _samples.remove(_value);
   }
 }
 
