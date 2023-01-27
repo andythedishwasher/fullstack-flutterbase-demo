@@ -44,7 +44,12 @@ class _SamplepoolWidgetState extends State<SamplepoolWidget> {
           builder: (alertDialogContext) {
             return AlertDialog(
               title: Text('Bummer!'),
-              content: Text((samples?.jsonBody ?? '').toString()),
+              content: Text(FirebaseMusicManagerGroup.getAllSamplesCall
+                  .error(
+                    (samples?.jsonBody ?? ''),
+                  )
+                  .toString()
+                  .toString()),
               actions: [
                 TextButton(
                   onPressed: () => Navigator.pop(alertDialogContext),
@@ -139,7 +144,7 @@ class _SamplepoolWidgetState extends State<SamplepoolWidget> {
                                           r'''$.url''',
                                         ),
                                         metas: Metas(
-                                          id: 'sample3.mp3-l68japl6',
+                                          id: 'sample3.mp3-5z64poe9',
                                           title: getJsonField(
                                             sampleListItem,
                                             r'''$.title''',

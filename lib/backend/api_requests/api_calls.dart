@@ -116,13 +116,9 @@ class GetAllSamplesCall {
         r'''$.samples''',
         true,
       );
-  dynamic urlError(dynamic response) => getJsonField(
+  dynamic error(dynamic response) => getJsonField(
         response,
-        r'''$.urlError''',
-      );
-  dynamic metadataError(dynamic response) => getJsonField(
-        response,
-        r'''$.metadataError''',
+        r'''$.error''',
       );
 }
 
