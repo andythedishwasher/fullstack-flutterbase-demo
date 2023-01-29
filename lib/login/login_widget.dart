@@ -5,7 +5,6 @@ import '../flutter_flow/flutter_flow_util.dart';
 import '../flutter_flow/flutter_flow_widgets.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 
@@ -17,6 +16,7 @@ class LoginWidget extends StatefulWidget {
 }
 
 class _LoginWidgetState extends State<LoginWidget> {
+  TextEditingController? displayNameController;
   TextEditingController? emailAddressController;
   TextEditingController? passwordController;
   late bool passwordVisibility;
@@ -31,6 +31,7 @@ class _LoginWidgetState extends State<LoginWidget> {
   @override
   void initState() {
     super.initState();
+    displayNameController = TextEditingController();
     emailAddressController = TextEditingController();
     passwordController = TextEditingController();
     passwordVisibility = false;
@@ -44,6 +45,7 @@ class _LoginWidgetState extends State<LoginWidget> {
   @override
   void dispose() {
     _unfocusNode.dispose();
+    displayNameController?.dispose();
     emailAddressController?.dispose();
     passwordController?.dispose();
     passwordConfirmController?.dispose();
@@ -323,6 +325,7 @@ class _LoginWidgetState extends State<LoginWidget> {
                                                   0, 24, 0, 0),
                                           child: FFButtonWidget(
                                             onPressed: () async {
+                                              Function() _navigate = () {};
                                               GoRouter.of(context)
                                                   .prepareAuthEvent();
 
@@ -337,16 +340,25 @@ class _LoginWidgetState extends State<LoginWidget> {
                                                 return;
                                               }
 
-                                              final usersUpdateData = {
-                                                'fcm_tokens':
-                                                    FieldValue.arrayUnion(
-                                                        [currentJwtToken]),
-                                              };
-                                              await currentUserReference!
-                                                  .update(usersUpdateData);
+                                              _navigate = () =>
+                                                  context.goNamedAuth(
+                                                      'samplepool', mounted);
+                                              if ((currentUserDocument
+                                                          ?.fcmTokens
+                                                          ?.toList() ??
+                                                      [])
+                                                  .toList()
+                                                  .contains(currentJwtToken!)) {
+                                                final usersUpdateData = {
+                                                  'fcm_tokens':
+                                                      FieldValue.arrayUnion(
+                                                          [currentJwtToken]),
+                                                };
+                                                await currentUserReference!
+                                                    .update(usersUpdateData);
+                                              }
 
-                                              context.goNamedAuth(
-                                                  'samplepool', mounted);
+                                              _navigate();
                                             },
                                             text: 'Login',
                                             options: FFButtonOptions(
@@ -377,9 +389,9 @@ class _LoginWidgetState extends State<LoginWidget> {
                                               EdgeInsetsDirectional.fromSTEB(
                                                   0, 20, 0, 0),
                                           child: FFButtonWidget(
-                                            onPressed: () {
-                                              print(
-                                                  'Button-ForgotPassword pressed ...');
+                                            onPressed: () async {
+                                              context
+                                                  .pushNamed('ForgotPassword');
                                             },
                                             text: 'Forgot Password?',
                                             options: FFButtonOptions(
@@ -404,134 +416,6 @@ class _LoginWidgetState extends State<LoginWidget> {
                                             ),
                                           ),
                                         ),
-                                        Padding(
-                                          padding:
-                                              EdgeInsetsDirectional.fromSTEB(
-                                                  20, 0, 20, 0),
-                                          child: Row(
-                                            mainAxisSize: MainAxisSize.max,
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.center,
-                                            children: [
-                                              Padding(
-                                                padding: EdgeInsetsDirectional
-                                                    .fromSTEB(0, 12, 0, 0),
-                                                child: Text(
-                                                  'Or use a social account to login',
-                                                  style: FlutterFlowTheme.of(
-                                                          context)
-                                                      .subtitle2
-                                                      .override(
-                                                        fontFamily: 'Outfit',
-                                                        color:
-                                                            Color(0xC8FFFFFF),
-                                                        fontSize: 16,
-                                                        fontWeight:
-                                                            FontWeight.normal,
-                                                      ),
-                                                ),
-                                              ),
-                                            ],
-                                          ),
-                                        ),
-                                        Padding(
-                                          padding:
-                                              EdgeInsetsDirectional.fromSTEB(
-                                                  0, 16, 0, 8),
-                                          child: Row(
-                                            mainAxisSize: MainAxisSize.max,
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.spaceEvenly,
-                                            children: [
-                                              InkWell(
-                                                onTap: () async {
-                                                  GoRouter.of(context)
-                                                      .prepareAuthEvent();
-                                                  final user =
-                                                      await signInWithGoogle(
-                                                          context);
-                                                  if (user == null) {
-                                                    return;
-                                                  }
-
-                                                  final usersUpdateData = {
-                                                    'fcm_tokens':
-                                                        FieldValue.arrayUnion(
-                                                            [currentJwtToken]),
-                                                  };
-                                                  await currentUserReference!
-                                                      .update(usersUpdateData);
-
-                                                  context.goNamedAuth(
-                                                      'samplepool', mounted);
-                                                },
-                                                child: Container(
-                                                  width: 50,
-                                                  height: 50,
-                                                  decoration: BoxDecoration(
-                                                    color: Color(0xFF0F1113),
-                                                    boxShadow: [
-                                                      BoxShadow(
-                                                        blurRadius: 5,
-                                                        color:
-                                                            Color(0x3314181B),
-                                                        offset: Offset(0, 2),
-                                                      )
-                                                    ],
-                                                    shape: BoxShape.circle,
-                                                  ),
-                                                  alignment:
-                                                      AlignmentDirectional(
-                                                          0, 0),
-                                                  child: FaIcon(
-                                                    FontAwesomeIcons.google,
-                                                    color: Colors.white,
-                                                    size: 24,
-                                                  ),
-                                                ),
-                                              ),
-                                              InkWell(
-                                                onTap: () async {
-                                                  GoRouter.of(context)
-                                                      .prepareAuthEvent();
-                                                  final user =
-                                                      await signInWithApple(
-                                                          context);
-                                                  if (user == null) {
-                                                    return;
-                                                  }
-
-                                                  context.goNamedAuth(
-                                                      'samplepool', mounted);
-                                                },
-                                                child: Container(
-                                                  width: 50,
-                                                  height: 50,
-                                                  decoration: BoxDecoration(
-                                                    color: Color(0xFF0F1113),
-                                                    boxShadow: [
-                                                      BoxShadow(
-                                                        blurRadius: 5,
-                                                        color:
-                                                            Color(0x3314181B),
-                                                        offset: Offset(0, 2),
-                                                      )
-                                                    ],
-                                                    shape: BoxShape.circle,
-                                                  ),
-                                                  alignment:
-                                                      AlignmentDirectional(
-                                                          0, 0),
-                                                  child: FaIcon(
-                                                    FontAwesomeIcons.apple,
-                                                    color: Colors.white,
-                                                    size: 24,
-                                                  ),
-                                                ),
-                                              ),
-                                            ],
-                                          ),
-                                        ),
                                       ],
                                     ),
                                   ),
@@ -543,6 +427,85 @@ class _LoginWidgetState extends State<LoginWidget> {
                                     child: Column(
                                       mainAxisSize: MainAxisSize.max,
                                       children: [
+                                        Padding(
+                                          padding:
+                                              EdgeInsetsDirectional.fromSTEB(
+                                                  0, 20, 0, 0),
+                                          child: TextFormField(
+                                            controller: displayNameController,
+                                            obscureText: false,
+                                            decoration: InputDecoration(
+                                              labelText: 'Display Name',
+                                              labelStyle:
+                                                  FlutterFlowTheme.of(context)
+                                                      .subtitle2
+                                                      .override(
+                                                        fontFamily: 'Outfit',
+                                                        color:
+                                                            Color(0xFF57636C),
+                                                        fontSize: 16,
+                                                        fontWeight:
+                                                            FontWeight.normal,
+                                                      ),
+                                              hintStyle: FlutterFlowTheme.of(
+                                                      context)
+                                                  .bodyText1
+                                                  .override(
+                                                    fontFamily: 'Lexend Deca',
+                                                    color: Color(0xFF95A1AC),
+                                                    fontSize: 14,
+                                                    fontWeight:
+                                                        FontWeight.normal,
+                                                  ),
+                                              enabledBorder: OutlineInputBorder(
+                                                borderSide: BorderSide(
+                                                  color: Color(0x00000000),
+                                                  width: 1,
+                                                ),
+                                                borderRadius:
+                                                    BorderRadius.circular(8),
+                                              ),
+                                              focusedBorder: OutlineInputBorder(
+                                                borderSide: BorderSide(
+                                                  color: Color(0x00000000),
+                                                  width: 1,
+                                                ),
+                                                borderRadius:
+                                                    BorderRadius.circular(8),
+                                              ),
+                                              errorBorder: OutlineInputBorder(
+                                                borderSide: BorderSide(
+                                                  color: Color(0x00000000),
+                                                  width: 1,
+                                                ),
+                                                borderRadius:
+                                                    BorderRadius.circular(8),
+                                              ),
+                                              focusedErrorBorder:
+                                                  OutlineInputBorder(
+                                                borderSide: BorderSide(
+                                                  color: Color(0x00000000),
+                                                  width: 1,
+                                                ),
+                                                borderRadius:
+                                                    BorderRadius.circular(8),
+                                              ),
+                                              filled: true,
+                                              fillColor: Colors.white,
+                                              contentPadding:
+                                                  EdgeInsetsDirectional
+                                                      .fromSTEB(20, 24, 20, 24),
+                                            ),
+                                            style: FlutterFlowTheme.of(context)
+                                                .bodyText1
+                                                .override(
+                                                  fontFamily: 'Lexend Deca',
+                                                  color: Color(0xFF14181B),
+                                                  fontSize: 14,
+                                                  fontWeight: FontWeight.normal,
+                                                ),
+                                          ),
+                                        ),
                                         Padding(
                                           padding:
                                               EdgeInsetsDirectional.fromSTEB(
@@ -849,6 +812,11 @@ class _LoginWidgetState extends State<LoginWidget> {
                                               }
 
                                               final usersUpdateData = {
+                                                ...createUsersRecordData(
+                                                  displayName:
+                                                      displayNameController!
+                                                          .text,
+                                                ),
                                                 'fcm_tokens':
                                                     FieldValue.arrayUnion(
                                                         [currentJwtToken]),
@@ -881,137 +849,6 @@ class _LoginWidgetState extends State<LoginWidget> {
                                                 width: 1,
                                               ),
                                             ),
-                                          ),
-                                        ),
-                                        Padding(
-                                          padding:
-                                              EdgeInsetsDirectional.fromSTEB(
-                                                  20, 20, 20, 0),
-                                          child: Row(
-                                            mainAxisSize: MainAxisSize.max,
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.center,
-                                            children: [
-                                              Expanded(
-                                                child: Padding(
-                                                  padding: EdgeInsetsDirectional
-                                                      .fromSTEB(0, 12, 0, 0),
-                                                  child: Text(
-                                                    'Or use a social account to create account',
-                                                    textAlign: TextAlign.center,
-                                                    style: FlutterFlowTheme.of(
-                                                            context)
-                                                        .subtitle2
-                                                        .override(
-                                                          fontFamily: 'Outfit',
-                                                          color:
-                                                              Color(0xC8FFFFFF),
-                                                          fontSize: 16,
-                                                          fontWeight:
-                                                              FontWeight.normal,
-                                                        ),
-                                                  ),
-                                                ),
-                                              ),
-                                            ],
-                                          ),
-                                        ),
-                                        Padding(
-                                          padding:
-                                              EdgeInsetsDirectional.fromSTEB(
-                                                  0, 16, 0, 8),
-                                          child: Row(
-                                            mainAxisSize: MainAxisSize.max,
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.spaceEvenly,
-                                            children: [
-                                              InkWell(
-                                                onTap: () async {
-                                                  GoRouter.of(context)
-                                                      .prepareAuthEvent();
-                                                  final user =
-                                                      await signInWithGoogle(
-                                                          context);
-                                                  if (user == null) {
-                                                    return;
-                                                  }
-
-                                                  final usersUpdateData = {
-                                                    'fcm_tokens':
-                                                        FieldValue.arrayUnion(
-                                                            [currentJwtToken]),
-                                                  };
-                                                  await currentUserReference!
-                                                      .update(usersUpdateData);
-
-                                                  context.goNamedAuth(
-                                                      'samplepool', mounted);
-                                                },
-                                                child: Container(
-                                                  width: 50,
-                                                  height: 50,
-                                                  decoration: BoxDecoration(
-                                                    color: Color(0xFF0F1113),
-                                                    boxShadow: [
-                                                      BoxShadow(
-                                                        blurRadius: 5,
-                                                        color:
-                                                            Color(0x3314181B),
-                                                        offset: Offset(0, 2),
-                                                      )
-                                                    ],
-                                                    shape: BoxShape.circle,
-                                                  ),
-                                                  alignment:
-                                                      AlignmentDirectional(
-                                                          0, 0),
-                                                  child: FaIcon(
-                                                    FontAwesomeIcons.google,
-                                                    color: Colors.white,
-                                                    size: 24,
-                                                  ),
-                                                ),
-                                              ),
-                                              InkWell(
-                                                onTap: () async {
-                                                  GoRouter.of(context)
-                                                      .prepareAuthEvent();
-                                                  final user =
-                                                      await signInWithApple(
-                                                          context);
-                                                  if (user == null) {
-                                                    return;
-                                                  }
-
-                                                  context.goNamedAuth(
-                                                      'samplepool', mounted);
-                                                },
-                                                child: Container(
-                                                  width: 50,
-                                                  height: 50,
-                                                  decoration: BoxDecoration(
-                                                    color: Color(0xFF0F1113),
-                                                    boxShadow: [
-                                                      BoxShadow(
-                                                        blurRadius: 5,
-                                                        color:
-                                                            Color(0x3314181B),
-                                                        offset: Offset(0, 2),
-                                                      )
-                                                    ],
-                                                    shape: BoxShape.circle,
-                                                  ),
-                                                  alignment:
-                                                      AlignmentDirectional(
-                                                          0, 0),
-                                                  child: FaIcon(
-                                                    FontAwesomeIcons.apple,
-                                                    color: Colors.white,
-                                                    size: 24,
-                                                  ),
-                                                ),
-                                              ),
-                                            ],
                                           ),
                                         ),
                                       ],

@@ -50,6 +50,12 @@ class FFAppState extends ChangeNotifier {
   void removeFromSamples(dynamic _value) {
     _samples.remove(_value);
   }
+
+  String _photoURL = 'https://picsum.photos/200';
+  String get photoURL => _photoURL;
+  set photoURL(String _value) {
+    _photoURL = _value;
+  }
 }
 
 LatLng? _latLngFromString(String? val) {

@@ -1,10 +1,12 @@
 import '../auth/auth_util.dart';
 import '../backend/api_requests/api_calls.dart';
+import '../backend/backend.dart';
 import '../flutter_flow/flutter_flow_audio_player.dart';
 import '../flutter_flow/flutter_flow_theme.dart';
 import '../flutter_flow/flutter_flow_util.dart';
 import '../flutter_flow/flutter_flow_widgets.dart';
 import '../flutter_flow/upload_media.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
@@ -22,6 +24,7 @@ class _UploadWidgetState extends State<UploadWidget> {
 
   ApiCallResponse? uploadResponse;
   TextEditingController? textController;
+  ApiCallResponse? uploadRefresh;
   final _unfocusNode = FocusNode();
   final scaffoldKey = GlobalKey<ScaffoldState>();
 
@@ -75,23 +78,6 @@ class _UploadWidgetState extends State<UploadWidget> {
                   builder: (context) => Text(
                     currentUserDisplayName,
                     style: FlutterFlowTheme.of(context).title1,
-                  ),
-                ),
-              ),
-              Padding(
-                padding: EdgeInsetsDirectional.fromSTEB(0, 20, 0, 0),
-                child: AuthUserStreamWidget(
-                  builder: (context) => Container(
-                    width: 120,
-                    height: 120,
-                    clipBehavior: Clip.antiAlias,
-                    decoration: BoxDecoration(
-                      shape: BoxShape.circle,
-                    ),
-                    child: Image.network(
-                      currentUserPhoto,
-                      fit: BoxFit.cover,
-                    ),
                   ),
                 ),
               ),
@@ -181,13 +167,21 @@ class _UploadWidgetState extends State<UploadWidget> {
                     jwtToken: currentJwtToken,
                   );
                   if ((uploadResponse?.succeeded ?? true)) {
-                    FFAppState().update(() {
+                    setState(() {
                       FFAppState().songUploaded = true;
                       FFAppState().uploadedUrl =
-                          FirebaseMusicManagerGroup.uploadSongCall.downloadUrl(
+                          FirebaseMusicManagerGroup.uploadSongCall.url(
                         (uploadResponse?.jsonBody ?? ''),
                       );
                     });
+
+                    final samplesCreateData = createSamplesRecordData(
+                      artist: currentUserDisplayName,
+                      title: textController!.text,
+                      uploadedAt: getCurrentTimestamp,
+                      claimed: false,
+                    );
+                    await SamplesRecord.collection.doc().set(samplesCreateData);
                   } else {
                     await showDialog(
                       context: context,
@@ -244,7 +238,7 @@ class _UploadWidgetState extends State<UploadWidget> {
                     audio: Audio.network(
                       FFAppState().uploadedUrl,
                       metas: Metas(
-                        id: 'sample3.mp3-tjj93coa',
+                        id: 'sample3.mp3-89fdz9v6',
                         title: textController!.text,
                       ),
                     ),
@@ -275,6 +269,46 @@ class _UploadWidgetState extends State<UploadWidget> {
                       FFAppState().uploadedUrl = '';
 
                       context.goNamed('samplepool');
+
+                      uploadRefresh = await FirebaseMusicManagerGroup
+                          .getAllSamplesCall
+                          .call(
+                        jwtToken: currentJwtToken,
+                      );
+                      if ((uploadRefresh?.succeeded ?? true)) {
+                        FFAppState().update(() {
+                          FFAppState().samples =
+                              FirebaseMusicManagerGroup.getAllSamplesCall
+                                  .samples(
+                                    (uploadRefresh?.jsonBody ?? ''),
+                                  )!
+                                  .toList();
+                        });
+                      } else {
+                        await showDialog(
+                          context: context,
+                          builder: (alertDialogContext) {
+                            return AlertDialog(
+                              title: Text('Bummer!'),
+                              content: Text(
+                                  FirebaseMusicManagerGroup.getAllSamplesCall
+                                      .error(
+                                        (uploadRefresh?.jsonBody ?? ''),
+                                      )
+                                      .toString()),
+                              actions: [
+                                TextButton(
+                                  onPressed: () =>
+                                      Navigator.pop(alertDialogContext),
+                                  child: Text('Ok'),
+                                ),
+                              ],
+                            );
+                          },
+                        );
+                      }
+
+                      setState(() {});
                     },
                     text: 'Sweet!',
                     options: FFButtonOptions(

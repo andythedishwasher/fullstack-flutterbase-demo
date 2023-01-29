@@ -77,13 +77,11 @@ class _PushNotificationsHandlerState extends State<PushNotificationsHandler> {
 
   @override
   Widget build(BuildContext context) => _loading
-      ? Center(
-          child: SizedBox(
-            width: 50,
-            height: 50,
-            child: CircularProgressIndicator(
-              color: FlutterFlowTheme.of(context).primaryColor,
-            ),
+      ? Container(
+          color: Color(0xFF20A944),
+          child: Image.asset(
+            'assets/images/codeKitchenLogo.png',
+            fit: BoxFit.contain,
           ),
         )
       : widget.child;
@@ -119,8 +117,9 @@ final parametersBuilderMap =
           'audioPath': getParameter<String>(data, 'audioPath'),
         },
       ),
-  'upload': ParameterData.none(),
   'samplepool': ParameterData.none(),
+  'ForgotPassword': ParameterData.none(),
+  'upload': ParameterData.none(),
 };
 
 Map<String, dynamic> getInitialParameterData(Map<String, dynamic> data) {

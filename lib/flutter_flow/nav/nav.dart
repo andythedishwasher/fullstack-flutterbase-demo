@@ -95,14 +95,19 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
               ),
             ),
             FFRoute(
-              name: 'upload',
-              path: 'upload',
-              builder: (context, params) => UploadWidget(),
-            ),
-            FFRoute(
               name: 'samplepool',
               path: 'samplepool',
               builder: (context, params) => SamplepoolWidget(),
+            ),
+            FFRoute(
+              name: 'ForgotPassword',
+              path: 'forgotPassword',
+              builder: (context, params) => ForgotPasswordWidget(),
+            ),
+            FFRoute(
+              name: 'upload',
+              path: 'upload',
+              builder: (context, params) => UploadWidget(),
             )
           ].map((r) => r.toRoute(appStateNotifier)).toList(),
         ).toRoute(appStateNotifier),
@@ -275,13 +280,11 @@ class FFRoute {
                 )
               : builder(context, ffParams);
           final child = appStateNotifier.loading
-              ? Center(
-                  child: SizedBox(
-                    width: 50,
-                    height: 50,
-                    child: CircularProgressIndicator(
-                      color: FlutterFlowTheme.of(context).primaryColor,
-                    ),
+              ? Container(
+                  color: Color(0xFF20A944),
+                  child: Image.asset(
+                    'assets/images/codeKitchenLogo.png',
+                    fit: BoxFit.contain,
                   ),
                 )
               : PushNotificationsHandler(child: page);

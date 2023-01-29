@@ -47,13 +47,13 @@ class UploadSongCall {
     );
   }
 
-  dynamic downloadUrl(dynamic response) => getJsonField(
+  dynamic url(dynamic response) => getJsonField(
         response,
-        r'''$.url[0]''',
+        r'''$.url''',
       );
   dynamic error(dynamic response) => getJsonField(
         response,
-        r'''$.error[0]''',
+        r'''$.error''',
       );
 }
 
